@@ -96,7 +96,7 @@ const JokeCard = () => {
         <div className="flex flex-col justify-center bg-black-mate w-full h-screen sm:h-[650px] overflow-hidden sm:max-w-xl items-center sm:rounded-[24px] sm:z-10">
             <ScrollArea className="w-full h-full flex flex-col px-6">
                 <div className="flex items-center flex-col w-full justify-center gap-3 pt-10">
-                    <img src="/src/assets/chucklepedia.png" alt="logo" width={90} height={90} sizes="100vw" className="rounded-full" />
+                    <img src="/chucklepedia.png" alt="logo" width={90} height={90} sizes="100vw" className="rounded-full" />
                     <div className="flex flex-col">
                         <a href="https://github.com/ahmadbisry-1626/chucklepedia" className="text-center font-semibold text-lg text-white hover:text-gray-300 transition-all duration-300" target="blank">@chucklepedia</a>
                         <span className="text-gray-400 text-sm sm:text-base text-center">Brightening your day, one joke at a time</span>
