@@ -112,7 +112,8 @@ const JokeCard = () => {
                                 y: 0,
                                 transition: {
                                     duration: 0.8,
-                                    ease: 'easeInOut'
+                                    ease: 'easeInOut',
+                                    delay: 0.4
                                 }
 
                             }}
@@ -127,7 +128,7 @@ const JokeCard = () => {
                                 transition: {
                                     duration: 0.5,
                                     ease: 'easeInOut',
-                                    delay: 0.4
+                                    delay: 0.8
                                 }
 
                             }}
