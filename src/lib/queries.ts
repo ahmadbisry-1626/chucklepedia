@@ -3,10 +3,10 @@ import { useQuery } from "react-query"
 import { fetchJoke } from "./action"
 
 
-export const useJoke = (blacklistFlag: string[], isFetchingEnabled: boolean) => {
+export const useJoke = (blacklistFlag: string[], isFetchingEnabled: boolean, type: string[]) => {
     return useQuery<JokeProps | null, Error>({
-        queryKey: ["joke", blacklistFlag],
-        queryFn: () => fetchJoke(blacklistFlag),
+        queryKey: ["joke", blacklistFlag, type],
+        queryFn: () => fetchJoke(blacklistFlag, type),
         staleTime: 5 * 60 * 1000,
         retry: 1,
         enabled: isFetchingEnabled

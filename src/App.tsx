@@ -1,10 +1,11 @@
 import JokeCard from "./components/JokeCard"
+import { BackgroundBeamsWithCollision } from "./components/ui/background-beams-with-collision"
 
 function App() {
     return (
-        <div className="flex items-center justify-center min-h-screen w-full bg-black">
+        <BackgroundBeamsWithCollision className="flex items-center justify-center min-h-screen">
             <JokeCard />
-        </div>
+        </BackgroundBeamsWithCollision>
     )
 }
 

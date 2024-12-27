@@ -7,14 +7,27 @@ import { formatTime } from "@/lib/utils"
 import { IoCheckmarkDone } from "react-icons/io5";
 import { FaCircle } from "react-icons/fa";
 import Filter from "./Filter"
-import { FaCode } from "react-icons/fa6";
+import Type from "./Type"
+import Features from "./Features"
+import { MdOutlineContentCopy } from "react-icons/md"
+import { FaCheck } from "react-icons/fa6"
 
 const JokeCard = () => {
     const [blacklistFlags, setBlacklistFlags] = useState<string[]>([])
+    const [emojis, setEmojis] = useState<{ [key: number]: number }>({});
+    const [copied, setCopied] = useState<Record<string, boolean>>({})
     const [fetchEnabled, setFetchEnabled] = useState<boolean>(false);
     const [currentJoke, setCurrentJoke] = useState<JokeProps | null>(null);
-    const { isLoading, refetch } = useJoke(blacklistFlags, fetchEnabled)
     const [jokes, setJokes] = useState<JokeProps[]>([]);
+    const [types, setType] = useState<string[]>([
+        'Programming',
+        'Miscellaneous',
+        'Dark',
+        'Pun',
+        'Spooky',
+        'Christmas'
+    ])
+    const { isLoading, refetch } = useJoke(blacklistFlags, fetchEnabled, types)
 
     useEffect(() => {
         if (currentJoke && !jokes.some((j) => j.setup === currentJoke.setup)) {
@@ -42,9 +55,31 @@ const JokeCard = () => {
         });
     }
 
+    const handleTypeChange = (type: string) => {
+        setType((prevType) => {
+            if (prevType.includes(type)) {
+                return prevType.filter((t) => t !== type)
+            } else {
+                return [...prevType, type]
+            }
+        })
+    }
+
+    const handleEmoji = (jokeIndex: number, emojiId: number) => {
+        setEmojis((prev) => {
+            const currentEmoji = prev[jokeIndex];
+            if (currentEmoji === emojiId) {
+                return { ...prev, [jokeIndex]: 0 };
+            } else {
+                return { ...prev, [jokeIndex]: emojiId };
+            }
+        });
+    };
+
+
     return (
-        <div className="flex flex-col justify-center bg-black-mate w-full h-screen sm:h-[650px] overflow-hidden sm:max-w-xl items-center sm:rounded-[24px]">
-            <ScrollArea className="w-full h-full flex flex-col px-6 sm:px-10">
+        <div className="flex flex-col justify-center bg-black-mate w-full h-screen sm:h-[650px] overflow-hidden sm:max-w-xl items-center sm:rounded-[24px] sm:z-10">
+            <ScrollArea className="w-full h-full flex flex-col px-6">
                 <div className="flex items-center flex-col w-full justify-center gap-3 pt-10">
                     <img src="/images/botak.jpg" alt="logo" width={80} height={80} sizes="100vw" className="rounded-full" />
                     <div className="flex flex-col gap-1">
@@ -53,7 +88,7 @@ const JokeCard = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-6 mt-10 pb-10">
+                <div className="flex flex-col gap-6 mt-10 pb-5">
                     <div className="flex flex-col gap-1 w-max">
                         <div className="px-4 py-2 rounded-[12px] bg-black-gray">
                             <span className="text-white">What's so funny?</span>
@@ -74,42 +109,65 @@ const JokeCard = () => {
                         </div>
                     </div>
 
-                    {isLoading && (
-                        <div className="flex items-center gap-1 mt-2">
-                            <FaCircle className="size-2 text-white animate-bounce" />
-                            <FaCircle className="size-2 text-white animate-bounce" style={{ animationDelay: '0.1s' }} />
-                            <FaCircle className="size-2 text-white animate-bounce" style={{ animationDelay: '0.2s' }} />
-                        </div>
-                    )}
-
                     {currentJoke && currentJoke.setup.length > 0 && (
-                        jokes.map((j, index) => (
-                            <div key={index} className="flex flex-col gap-1 max-w-max">
+                        jokes.map((j) => (
+                            <div key={j.id} className="flex flex-col gap-2 max-w-max">
                                 <div className="px-4 py-2 rounded-[12px] bg-black-gray flex flex-col gap-2">
                                     <span className="text-white">{j.setup}</span>
                                     <span className="text-white">{j.delivery}</span>
                                 </div>
-                                <div className="w-full flex items-center justify-end gap-2">
-                                    <span className="text-gray-400 text-xs">
-                                        {formatTime(new Date())}
-                                    </span>
-                                    <IoCheckmarkDone className="size-4 text-gray-400" />
+                                <div className="w-full flex items-center justify-between">
+                                    <div className="flex items-cemter gap-2">
+                                        <Features
+                                            onHandleEmoji={(emojiId) => handleEmoji(j.id, emojiId)}
+                                            currentEmojiId={emojis[j.id] || 0}
+                                        />
+
+
+                                        <button
+                                            disabled={copied[j.id]}
+                                            onClick={async () => {
+                                                await navigator.clipboard.writeText(j.setup + '\n' + j.delivery);
+                                                setCopied((prev) => ({ ...prev, [j.id]: true }))
+                                                setTimeout(() => setCopied((prev) => ({ ...prev, [j.id]: false })), 3000)
+                                            }}>
+                                            {copied[j.id] ? (
+                                                <FaCheck className="!size-4 text-gray-400 transition-all duration-300" />
+                                            ) : (
+                                                <MdOutlineContentCopy className="!size-4 text-gray-400 hover:text-white transition-all duration-300" />
+                                            )}
+                                        </button>
+
+                                        <span className="text-sm text-gray-400">{j.category}</span>
+                                    </div>
+
+                                    <div className="flex items-center gap-1">
+                                        <span className="text-gray-400 text-xs">
+                                            {formatTime(new Date())}
+                                        </span>
+                                        <IoCheckmarkDone className="size-4 text-gray-400" />
+                                    </div>
                                 </div>
                             </div>
                         ))
                     )}
+
+                    {isLoading && (
+                        <div className="flex items-center gap-1 mt-2">
+                            <FaCircle className="size-1.5 text-white animate-bounce" />
+                            <FaCircle className="size-1.5 text-white animate-bounce" style={{ animationDelay: '0.1s' }} />
+                            <FaCircle className="size-1.5 text-white animate-bounce" style={{ animationDelay: '0.2s' }} />
+                        </div>
+                    )}
                 </div>
             </ScrollArea>
-            <div className="py-4 w-full px-6 flex items-center gap-3 sm:bg-gray-100 relative max-sm:flex-col-reverse">
-                <Button className="bg-white w-full rounded-[12px] h-[50px] text-black font-semibold text-sm sm:text-md" onClick={handleRefetch}>
-                    Get a random Joke
+            <div className="py-4 w-full px-6 flex items-center gap-3 relative max-sm:flex-col-reverse">
+                <Button className="bg-white w-full rounded-[12px] h-[40px] sm:h-[50px] text-black font-semibold text-md" onClick={handleRefetch}>
+                    Tickle Me!
                 </Button>
                 <div className="flex items-center gap-3 max-sm:w-full">
-                    <Filter onHandleCheckChange={handleCheckbox} blacklistFlag={blacklistFlags}/>
-                    <Button className="bg-white w-full sm:w-max rounded-[12px] h-[50px] text-black font-semibold text-sm sm:text-md flex items-center gap-2">
-                        <FaCode className="!size-5 text-black" />
-                        <span className="-translate-y-0.5">Type</span>
-                    </Button>
+                    <Filter onHandleCheckChange={handleCheckbox} blacklistFlag={blacklistFlags} />
+                    <Type types={types} onHandleTypeChange={handleTypeChange} />
                 </div>
             </div>
         </div>

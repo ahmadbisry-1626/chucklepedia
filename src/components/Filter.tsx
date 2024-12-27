@@ -14,9 +14,9 @@ const Filter = ({ blacklistFlag, onHandleCheckChange }: { blacklistFlag: string[
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button className="bg-white w-full sm:w-max rounded-[12px] h-[50px] text-black font-semibold text-sm sm:text-md flex items-center gap-2">
+                <Button className="bg-white w-full sm:w-max rounded-[12px] h-[40px] sm:h-[50px] text-black font-semibold text-sm sm:text-md flex items-center gap-2">
                     <FaFlag className="!size-4 text-black" />
-                    Flags
+                    <span className="-translate-y-0.5">Flags</span>
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="flex flex-col gap-2">
