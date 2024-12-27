@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export const axiosClient = axios.create({
-    baseURL: process.env.BASE_URL,
+    baseURL: 'https://v2.jokeapi.dev/joke/',
     timeout: 3000
 })

@@ -2,9 +2,11 @@ import { JokeProps } from "@/type"
 import { axiosClient } from "./client"
 
 
-export const fetchJoke = async (): Promise<JokeProps> => {
+export const fetchJoke = async (blacklistFlag: string[]): Promise<JokeProps> => {
     try {
-        const response = await axiosClient.get(`Any?blacklistFlags=political,racist&type=twopart`)
+        const blacklistQuery = blacklistFlag.length > 0 ? `blacklistFlags=${blacklistFlag.join(',')}` : ''
+
+        const response = await axiosClient.get(`Any?${blacklistQuery}&type=twopart`)
 
         return response.data
     } catch (error) {
