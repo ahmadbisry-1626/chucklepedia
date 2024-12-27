@@ -5,6 +5,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { Emoji } from '@/constants'
+import { motion } from 'framer-motion';
 
 
 const Features = ({ onHandleEmoji, currentEmojiId }: { onHandleEmoji: (id: number) => void, currentEmojiId: number }) => {
@@ -14,7 +15,19 @@ const Features = ({ onHandleEmoji, currentEmojiId }: { onHandleEmoji: (id: numbe
         <Popover>
             <PopoverTrigger>
                 {currentEmojiId > 0 && newEmoji ? (
-                    <newEmoji.icon className="!size-4 text-yellow-400 hover:scale-110 transition-all duration-300" />
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.6}}
+                        animate={{
+                            opacity: 1,
+                            scale: 1,
+                            transition: {
+                                duration: 0.5,
+                                ease: 'easeInOut',
+                            }
+
+                        }}>
+                        <newEmoji.icon className="!size-4 text-yellow-400 hover:scale-110 transition-all duration-300" />
+                    </motion.div>
                 ) : (
                     <MdOutlineAddReaction className="!size-4 text-gray-400 hover:text-white transition-all duration-300" />
                 )}

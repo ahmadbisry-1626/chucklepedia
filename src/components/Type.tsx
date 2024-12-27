@@ -12,13 +12,13 @@ const Type = ({ types, onHandleTypeChange }: { types: string[], onHandleTypeChan
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button className="bg-white w-full sm:w-max rounded-[12px] h-[40px] sm:h-[50px] text-black font-semibold text-sm sm:text-md flex items-center gap-2">
+                <Button className="bg-white w-full sm:w-max rounded-[12px] h-[40px] sm:h-[50px] text-black font-semibold text-sm sm:text-md flex items-center gap-3">
                     <FaCode className="!size-5 text-black" />
-                    <span className="-translate-y-0.5">Type</span>
+                    <span className="-translate-y-0.5">Categories</span>
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="flex flex-col gap-2">
-                <span className="text-base font-semibold text-black">Select joke type</span>
+                <span className="text-base font-semibold text-black">Select joke categories</span>
                 <div className="grid grid-cols-2 gap-2">
                     {typeFilter.map((type) => (
                         <div key={type} className="flex items-center gap-2">
