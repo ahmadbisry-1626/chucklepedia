@@ -14,7 +14,7 @@ const Type = ({ types, onHandleTypeChange }: { types: string[], onHandleTypeChan
             <PopoverTrigger asChild>
                 <Button className="bg-white w-full sm:w-max rounded-[12px] h-[40px] sm:h-[50px] text-black font-semibold text-sm sm:text-md flex items-center gap-3">
                     <FaCode className="!size-5 text-black" />
-                    <span className="-translate-y-0.5">Categories</span>
+                    <span className="sm:-translate-y-0.5">Categories</span>
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="flex flex-col gap-2">
